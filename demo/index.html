@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>tse-toglle-animate-demo</title>
+    <link rel="stylesheet" href="media/libcss/font-awesome.min.css">
+    <link rel="stylesheet" href="media/libcss/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="media/libcss/style.css" media="screen" />
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script type="text/javascript" src="media/libjs/toglle.js"></script>
+    <script src="media/libjs/ace/ace.js"></script>
+    <script src="media/libjs/ace/ext-language_tools.js"></script>
+</head>
+<body>
+
+<div class="builder">
+</div>
+<div class="right-bar active">
+    <div class="fullscrin" >
+        <div class="fullscrin-panel"><a class="fullscrin-expand fa fa-arrows-alt"></a><a class="fullscrin-arrows fa fa-arrows-h"></a></div>
+        <pre id="ace-editor"></pre>
+    </div>
+    <a class="btn-bar fa fa-angle-double-right"></a>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        var leftPosition = $('body').innerWidth()-$('.right-bar').innerWidth();
+        $('.right-bar').animatetoglle(
+                {
+                    pointAnimate: {
+                        right: '-' + $('.fullscrin').innerWidth()+'px'
+                    }
+                },
+                $('.btn-bar')
+        );
+        $('.right-bar').animatetoglle(
+                {
+                    pointAnimate: {
+                        width: '50%'
+                    }
+                },
+                $('.fullscrin-arrows')
+        );
+        $('.right-bar').animatetoglle(
+                {
+                    pointAnimate: {
+                        width: '100%'
+
+                    },
+                    cssAnimate: {
+                        position: 'fixed'
+                    }
+                },
+                $('.fullscrin-expand')
+        )
+        $('#ace-editor').height($(window).innerHeight()-20-$('.fullscrin-panel').innerHeight());
+        var editor = ace.edit("ace-editor");
+        editor.session.setMode("ace/mode/html");
+        editor.setTheme("ace/theme/tse");
+        editor.setOptions({
+            enableBasicAutocompletion: true,
+            enableLiveAutocompletion: true
+        });
+        editor.on("change", function(e) {
+            if (editor.curOp && editor.curOp.command.name){
+                $('.builder').html(editor.getValue());
+            }
+        })
+        $(window).on('resize', function () {
+            $('#ace-editor').height($(window).innerHeight()-20-$('.fullscrin-panel').innerHeight());
+        })
+    });
+</script>
